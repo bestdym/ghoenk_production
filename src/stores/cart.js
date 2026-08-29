@@ -5,6 +5,8 @@ export const useCartStore = defineStore('cart', () => {
   const items = ref([])
   
   const isCartOpen = ref(false)
+  const customerName = ref('')
+  const customerEmail = ref('')
   const startDate = ref('')
   const endDate = ref('')
   const location = ref('')
@@ -56,6 +58,8 @@ export const useCartStore = defineStore('cart', () => {
   return {
     items,
     isCartOpen,
+    customerName,
+    customerEmail,
     startDate,
     endDate,
     location,
