@@ -2,9 +2,13 @@
 import { useCartStore } from './stores/cart'
 import Navbar from './components/Navbar.vue'
 import { supabase } from './lib/supabase'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
+import { useRoute } from 'vue-router'
 
+const route = useRoute()
 const cartStore = useCartStore()
+
+const isAdminRoute = computed(() => route.path.startsWith('/admin'))
 const appSettings = ref({
   whatsapp_number: '6281227419667',
   order_enabled: true
@@ -66,7 +70,7 @@ const checkoutWhatsApp = () => {
 <template>
   <div class="min-h-screen bg-gray-50 font-sans selection:bg-slate-900 selection:text-white flex flex-col">
     
-    <Navbar />
+    <Navbar v-if="!isAdminRoute" />
 
     <!-- MAIN CONTENT -->
     <main class="flex-1">
@@ -74,7 +78,7 @@ const checkoutWhatsApp = () => {
     </main>
 
     <!-- FOOTER -->
-    <footer class="bg-zinc-950 text-gray-400 py-16">
+    <footer v-if="!isAdminRoute" class="bg-zinc-950 text-gray-400 py-16">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           <div class="md:col-span-2">
@@ -120,7 +124,7 @@ const checkoutWhatsApp = () => {
     </footer>
 
     <!-- CART SLIDE-OUT PANEL (LIGHT THEME) -->
-    <div v-if="cartStore.isCartOpen" class="fixed inset-0 z-50 overflow-hidden" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
+    <div v-if="!isAdminRoute && cartStore.isCartOpen" class="fixed inset-0 z-50 overflow-hidden" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
       <div class="absolute inset-0 bg-zinc-900/60 backdrop-blur-sm transition-opacity" @click="cartStore.isCartOpen = false"></div>
       
       <div class="fixed inset-y-0 right-0 max-w-md w-full flex">

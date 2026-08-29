@@ -5,6 +5,7 @@ import Catalog from '../views/Catalog.vue'
 import Contact from '../views/Contact.vue'
 import Sell from '../views/Sell.vue'
 import Documentation from '../views/Documentation.vue'
+import AdminHome from '../views/admin/Home.vue'
 
 // Admin Views
 import AdminLogin from '../views/admin/Login.vue'
@@ -29,9 +30,10 @@ const router = createRouter({
       component: () => import('../views/admin/Dashboard.vue'),
       meta: { requiresAuth: true },
       children: [
-        { path: '', redirect: '/admin/catalog' },
+        { path: '', component: AdminHome },
         { path: 'catalog', name: 'admin-catalog', component: () => import('../views/admin/ManageCatalog.vue') },
         { path: 'doc', name: 'admin-doc', component: () => import('../views/admin/ManageDoc.vue') },
+        { path: 'sell', name: 'admin-sell', component: () => import('../views/admin/ManageSell.vue') },
         { path: 'settings', name: 'admin-settings', component: () => import('../views/admin/ManageSettings.vue') }
       ]
     }

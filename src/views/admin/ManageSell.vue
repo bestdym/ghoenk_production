@@ -2,11 +2,11 @@
   <div>
     <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
       <div>
-        <h1 class="text-3xl font-black text-zinc-900 tracking-tight">Katalog Alat</h1>
-        <p class="text-gray-500 mt-1">Kelola data alat yang disewakan.</p>
+        <h1 class="text-3xl font-black text-zinc-900 tracking-tight">Jual Beli</h1>
+        <p class="text-gray-500 mt-1">Kelola barang yang dijual (bekas/baru).</p>
       </div>
       <button @click="openModal()" class="bg-cyan-500 hover:bg-cyan-600 text-zinc-900 px-6 py-2.5 rounded-xl font-bold transition-all shadow-sm">
-        + Tambah Alat
+        + Tambah Barang
       </button>
     </div>
 
@@ -16,9 +16,9 @@
         <table class="min-w-full divide-y divide-gray-200">
           <thead class="bg-gray-50">
             <tr>
-              <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Nama Alat</th>
-              <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Kategori</th>
-              <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Harga/Hari</th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Nama Barang</th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Kondisi</th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Harga Jual</th>
               <th class="px-6 py-4 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">Aksi</th>
             </tr>
           </thead>
@@ -26,10 +26,10 @@
             <tr v-if="loading">
               <td colspan="4" class="px-6 py-8 text-center text-sm font-medium text-gray-500">Memuat data...</td>
             </tr>
-            <tr v-else-if="catalogs.length === 0">
-              <td colspan="4" class="px-6 py-8 text-center text-sm font-medium text-gray-500">Belum ada data katalog.</td>
+            <tr v-else-if="items.length === 0">
+              <td colspan="4" class="px-6 py-8 text-center text-sm font-medium text-gray-500">Belum ada barang untuk dijual.</td>
             </tr>
-            <tr v-for="item in catalogs" :key="item.id" class="hover:bg-gray-50 transition-colors">
+            <tr v-for="item in items" :key="item.id" class="hover:bg-gray-50 transition-colors">
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="flex items-center">
                   <div class="flex-shrink-0 h-12 w-12 bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
@@ -37,17 +37,17 @@
                   </div>
                   <div class="ml-4">
                     <div class="text-sm font-bold text-zinc-900">{{ item.name }}</div>
-                    <div class="text-xs text-gray-500 mt-0.5">{{ item.badge }}</div>
+                    <div class="text-xs text-gray-500 mt-0.5">{{ item.category }}</div>
                   </div>
                 </div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-md bg-cyan-50 text-cyan-700 border border-cyan-100">
-                  {{ item.category }}
+                  {{ item.condition }}
                 </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 font-mono font-medium">
-                Rp {{ item.price_per_day.toLocaleString('id-ID') }}
+                Rp {{ item.price.toLocaleString('id-ID') }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold">
                 <button @click="openModal(item)" class="text-yellow-600 hover:text-yellow-700 mr-4 transition-colors">Edit</button>
@@ -69,28 +69,37 @@
           <form @submit.prevent="saveItem">
             <div class="bg-white px-6 pt-6 pb-6">
               <h3 class="text-xl leading-6 font-black text-zinc-900 mb-6" id="modal-title">
-                {{ isEditing ? 'Edit Katalog Alat' : 'Tambah Katalog Alat' }}
+                {{ isEditing ? 'Edit Barang' : 'Tambah Barang' }}
               </h3>
               
               <div class="space-y-4">
                 <div>
-                  <label class="block text-sm font-bold text-gray-700 mb-1">Nama Alat</label>
+                  <label class="block text-sm font-bold text-gray-700 mb-1">Nama Barang</label>
                   <input v-model="formData.name" type="text" required class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-zinc-900 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500">
                 </div>
                 
-                <div>
-                  <label class="block text-sm font-bold text-gray-700 mb-1">Kategori</label>
-                  <input v-model="formData.category" type="text" required class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-zinc-900 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500" placeholder="Sound System, Lighting, dll">
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">Kategori</label>
+                    <input v-model="formData.category" type="text" required class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-zinc-900 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500" placeholder="Sound System, Lighting, dll">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">Kondisi</label>
+                    <select v-model="formData.condition" required class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-zinc-900 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500">
+                      <option value="Baru">Baru</option>
+                      <option value="Bekas">Bekas</option>
+                    </select>
+                  </div>
                 </div>
 
                 <div>
-                  <label class="block text-sm font-bold text-gray-700 mb-1">Harga Sewa / Hari (Rp)</label>
-                  <input v-model="formData.price_per_day" type="number" required class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-zinc-900 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 font-mono">
+                  <label class="block text-sm font-bold text-gray-700 mb-1">Harga Jual (Rp)</label>
+                  <input v-model="formData.price" type="number" required class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-zinc-900 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 font-mono">
                 </div>
 
                 <div>
                   <label class="block text-sm font-bold text-gray-700 mb-1">Badge (Opsional)</label>
-                  <input v-model="formData.badge" type="text" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-zinc-900 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500" placeholder="Misal: POPULER, TERBARU">
+                  <input v-model="formData.badge" type="text" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-zinc-900 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500" placeholder="Misal: HOT, TERLARIS">
                 </div>
 
                 <div>
@@ -106,7 +115,7 @@
                 Batal
               </button>
               <button type="submit" :disabled="isSaving" class="px-5 py-2.5 bg-cyan-500 hover:bg-cyan-600 text-zinc-900 rounded-xl font-bold transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
-                {{ isSaving ? 'Menyimpan...' : 'Simpan Alat' }}
+                {{ isSaving ? 'Menyimpan...' : 'Simpan Barang' }}
               </button>
             </div>
           </form>
@@ -120,7 +129,7 @@
 import { ref, onMounted } from 'vue'
 import { supabase } from '../../lib/supabase'
 
-const catalogs = ref([])
+const items = ref([])
 const loading = ref(true)
 
 // Modal State
@@ -133,16 +142,17 @@ const fileToUpload = ref(null)
 const formData = ref({
   name: '',
   category: '',
-  price_per_day: '',
+  condition: 'Baru',
+  price: '',
   badge: '',
   image_url: ''
 })
 
-const fetchCatalogs = async () => {
+const fetchItems = async () => {
   loading.value = true
-  const { data, error } = await supabase.from('catalogs').select('*').order('created_at', { ascending: false })
+  const { data, error } = await supabase.from('sell_items').select('*').order('created_at', { ascending: false })
   if (error) console.error(error)
-  else catalogs.value = data
+  else items.value = data
   loading.value = false
 }
 
@@ -157,7 +167,8 @@ const openModal = (item = null) => {
     formData.value = {
       name: '',
       category: '',
-      price_per_day: '',
+      condition: 'Baru',
+      price: '',
       badge: '',
       image_url: ''
     }
@@ -183,7 +194,7 @@ const uploadImage = async () => {
   const file = fileToUpload.value
   const fileExt = file.name.split('.').pop()
   const fileName = `${Math.random()}.${fileExt}`
-  const filePath = `catalog/${fileName}`
+  const filePath = `sell/${fileName}`
 
   const { error: uploadError } = await supabase.storage
     .from('images')
@@ -215,20 +226,20 @@ const saveItem = async () => {
 
     if (isEditing.value) {
       const { error } = await supabase
-        .from('catalogs')
+        .from('sell_items')
         .update(formData.value)
         .eq('id', editId.value)
       
       if (error) throw error
     } else {
       const { error } = await supabase
-        .from('catalogs')
+        .from('sell_items')
         .insert([formData.value])
       
       if (error) throw error
     }
 
-    await fetchCatalogs()
+    await fetchItems()
     closeModal()
   } catch (error) {
     console.error(error)
@@ -239,14 +250,14 @@ const saveItem = async () => {
 }
 
 const deleteItem = async (id) => {
-  if (confirm('Yakin ingin menghapus alat ini dari katalog?')) {
-    const { error } = await supabase.from('catalogs').delete().eq('id', id)
+  if (confirm('Yakin ingin menghapus barang ini?')) {
+    const { error } = await supabase.from('sell_items').delete().eq('id', id)
     if (error) alert('Gagal menghapus: ' + error.message)
-    else fetchCatalogs()
+    else fetchItems()
   }
 }
 
 onMounted(() => {
-  fetchCatalogs()
+  fetchItems()
 })
 </script>
