@@ -1,15 +1,75 @@
 <template>
-  <div class="pt-32 pb-16 px-4 max-w-7xl mx-auto">
-    <h1 class="text-4xl font-black text-white mb-6">HUBUNGI <span class="text-cyan-400">KAMI</span></h1>
-    <div class="bg-slate-900 border border-slate-800 rounded-xl p-8 max-w-xl">
-      <p class="text-gray-400 mb-6">Butuh konsultasi untuk acara Anda? Jangan ragu untuk menghubungi kami melalui WhatsApp.</p>
+  <div class="pt-32 pb-20 bg-gray-50 min-h-screen flex items-center justify-center">
+    <div class="max-w-4xl w-full mx-auto px-4">
       
-      <a href="https://wa.me/6285786577918" target="_blank" class="inline-flex items-center gap-3 text-2xl font-bold text-yellow-400 hover:text-white transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#25D366]" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564c.173.087.289.129.332.202.043.073.043.423-.101.827zM22.5 12c0 5.799-4.701 10.5-10.5 10.5-1.846 0-3.583-.479-5.114-1.332l-6.886 1.808 1.841-6.702c-.933-1.586-1.468-3.447-1.468-5.41 0-5.799 4.701-10.5 10.5-10.5s10.5 4.701 10.5 10.5zm-1.5 0c0-4.971-4.029-9-9-9s-9 4.029-9 9c0 1.951.624 3.754 1.688 5.213l-1.127 4.102 4.225-1.107c1.423.945 3.123 1.512 4.931 1.512 4.971 0 9-4.029 9-9z"/>
-        </svg>
-        0857-8657-7918
-      </a>
+      <div class="text-center mb-12">
+        <h1 class="text-4xl font-black text-slate-900 tracking-tight mb-4">Get in Touch</h1>
+        <p class="text-lg text-slate-500 font-medium">Have a question or need custom equipment? Send us a message.</p>
+      </div>
+
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col md:flex-row">
+        
+        <!-- Contact Info Side -->
+        <div class="bg-slate-900 text-white p-10 md:w-2/5 flex flex-col justify-between">
+          <div>
+            <h3 class="text-2xl font-bold mb-2">Contact Information</h3>
+            <p class="text-gray-400 mb-8 text-sm">Fill up the form and our team will get back to you within 24 hours.</p>
+            
+            <div class="space-y-6">
+              <div class="flex items-center gap-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+                <span class="font-medium">+62 857 8657 7918</span>
+              </div>
+              <div class="flex items-center gap-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                <span class="font-medium">hello@ghoenk.com</span>
+              </div>
+              <div class="flex items-start gap-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-400 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span class="font-medium">Jl. Raya Production No. 12<br/>Jakarta Selatan, Indonesia</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chat Form Side -->
+        <div class="p-10 md:w-3/5">
+          <form @submit.prevent class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-bold text-slate-700 mb-2">First Name</label>
+                <input type="text" class="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors bg-gray-50">
+              </div>
+              <div>
+                <label class="block text-sm font-bold text-slate-700 mb-2">Last Name</label>
+                <input type="text" class="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors bg-gray-50">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-bold text-slate-700 mb-2">Email</label>
+              <input type="email" class="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors bg-gray-50">
+            </div>
+
+            <div>
+              <label class="block text-sm font-bold text-slate-700 mb-2">Message</label>
+              <textarea rows="4" placeholder="Write your message here..." class="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors bg-gray-50 resize-none"></textarea>
+            </div>
+
+            <button type="submit" class="bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 px-8 rounded-full transition-all shadow-md float-right">
+              Send Message
+            </button>
+          </form>
+        </div>
+
+      </div>
     </div>
   </div>
 </template>

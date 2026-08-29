@@ -93,11 +93,11 @@ const checkoutWhatsApp = () => {
   <div class="pt-24 pb-20 bg-gray-50 min-h-screen">
     <!-- CATALOG GRID -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="mb-10">
-        <h2 class="text-3xl font-black text-slate-900 tracking-tight">
+      <div class="mb-12 text-center">
+        <h2 class="text-4xl font-black text-slate-900 tracking-tight">
           Equipment Catalog
         </h2>
-        <p class="text-slate-500 mt-2 font-medium">Select the equipment you need for your next project.</p>
+        <p class="text-slate-500 mt-4 text-lg font-medium">Select the equipment you need for your next project.</p>
       </div>
       
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
