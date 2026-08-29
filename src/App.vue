@@ -1,14 +1,36 @@
 <script setup>
 import { useCartStore } from './stores/cart'
 import Navbar from './components/Navbar.vue'
+import { supabase } from './lib/supabase'
+import { ref, onMounted } from 'vue'
 
 const cartStore = useCartStore()
+const appSettings = ref({
+  whatsapp_number: '6281227419667',
+  order_enabled: true
+})
+
+onMounted(async () => {
+  const { data } = await supabase.from('settings').select('*')
+  if (data) {
+    const wa = data.find(s => s.setting_key === 'whatsapp_number')
+    const order = data.find(s => s.setting_key === 'order_enabled')
+    
+    if (wa) appSettings.value.whatsapp_number = wa.setting_value
+    if (order) appSettings.value.order_enabled = (order.setting_value === 'true')
+  }
+})
 
 const formatRupiah = (number) => {
   return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(number)
 }
 
 const checkoutWhatsApp = () => {
+  if (!appSettings.value.order_enabled) {
+    alert("Mohon maaf, saat ini kami sedang tidak menerima pesanan baru.")
+    return
+  }
+
   if (!cartStore.customerName || !cartStore.customerEmail || !cartStore.startDate || !cartStore.endDate || !cartStore.location) {
     alert("Harap lengkapi semua Data Pemesan dan Detail Acara!")
     return
@@ -18,7 +40,8 @@ const checkoutWhatsApp = () => {
     return
   }
 
-  const phoneNumber = '6281227419667'
+  const phoneNumber = appSettings.value.whatsapp_number
+  
   
   let text = `*ORDER BARU - GHOENK PRODUCTION*\n\n`
   text += `*Nama Pemesan:* ${cartStore.customerName}\n`
