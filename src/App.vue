@@ -65,6 +65,7 @@ const checkoutWhatsApp = () => {
             <ul class="space-y-3 text-sm font-medium">
               <li><router-link to="/" class="hover:text-cyan-400 transition-colors">Tentang Kami</router-link></li>
               <li><router-link to="/catalog" class="hover:text-cyan-400 transition-colors">Katalog Alat</router-link></li>
+              <li><router-link to="/documentation" class="hover:text-cyan-400 transition-colors">Dokumentasi</router-link></li>
               <li><router-link to="/sell" class="hover:text-cyan-400 transition-colors">Jual Beli</router-link></li>
               <li><router-link to="/contact" class="hover:text-cyan-400 transition-colors">Kontak</router-link></li>
             </ul>
