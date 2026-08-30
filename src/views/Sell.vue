@@ -75,7 +75,7 @@ const contactAdmin = async (item) => {
 </script>
 
 <template>
-  <div class="pt-24 pb-20 bg-gray-50 min-h-screen">
+  <div class="pt-32 pb-20 bg-gray-50 min-h-screen">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="mb-12 text-center">
         <h2 class="text-4xl font-black text-slate-900 tracking-tight">

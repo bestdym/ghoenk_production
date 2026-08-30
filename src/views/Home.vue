@@ -1,14 +1,14 @@
 <template>
   <div class="bg-gray-50 min-h-screen">
     <!-- HERO SECTION -->
-    <div class="relative pt-24 pb-20 md:pt-36 md:pb-32 overflow-hidden bg-slate-100 flex items-center justify-center min-h-[600px]">
+    <div class="relative pt-32 pb-16 overflow-hidden bg-slate-100 flex items-center justify-center">
       <!-- Background Image (Simulated with a placeholder or CSS for now) -->
       <div class="absolute inset-0 w-full h-full">
         <img src="https://placehold.co/1920x800/e2e8f0/cbd5e1?text=Warehouse+Background" class="w-full h-full object-cover opacity-60 mix-blend-multiply blur-sm">
         <div class="absolute inset-0 bg-white/40"></div>
       </div>
       
-      <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center mt-10">
+      <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h1 class="text-4xl md:text-6xl font-black text-slate-900 tracking-tight mb-6">
           Perlengkapan Pesta, <br/>
           Siap Sedia.
@@ -33,7 +33,7 @@
     </div>
 
     <!-- FEATURED INVENTORY -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       <div class="flex justify-between items-end mb-8">
         <div>
           <h2 class="text-3xl font-black text-slate-900 tracking-tight">Kategori Unggulan</h2>
