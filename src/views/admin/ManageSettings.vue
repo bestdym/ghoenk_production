@@ -67,6 +67,16 @@ const fetchSettings = async () => {
   }
 }
 
+import Swal from 'sweetalert2'
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+})
+
 const saveWaNumber = async () => {
   const { data: existing } = await supabase.from('settings').select('id').eq('setting_key', 'whatsapp_number').maybeSingle()
   
@@ -79,8 +89,17 @@ const saveWaNumber = async () => {
     error = res.error
   }
   
-  if (error) alert('Gagal menyimpan: ' + error.message)
-  else alert('Nomor WhatsApp berhasil disimpan!')
+  if (error) {
+    Toast.fire({
+      icon: 'error',
+      title: 'Gagal menyimpan: ' + error.message
+    })
+  } else {
+    Toast.fire({
+      icon: 'success',
+      title: 'Nomor WhatsApp berhasil disimpan!'
+    })
+  }
 }
 
 const toggleOrderEnabled = async () => {
@@ -97,9 +116,16 @@ const toggleOrderEnabled = async () => {
   }
     
   if (error) {
-    alert('Gagal mengubah status: ' + error.message)
+    Toast.fire({
+      icon: 'error',
+      title: 'Gagal mengubah status: ' + error.message
+    })
   } else {
     orderEnabled.value = newValue
+    Toast.fire({
+      icon: 'success',
+      title: 'Status pemesanan diperbarui!'
+    })
   }
 }
 

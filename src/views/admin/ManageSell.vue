@@ -218,6 +218,8 @@ const uploadImage = async () => {
   return data.publicUrl
 }
 
+import Swal from 'sweetalert2'
+
 const saveItem = async () => {
   try {
     isSaving.value = true
@@ -226,7 +228,12 @@ const saveItem = async () => {
     if (fileToUpload.value) {
       formData.value.image_url = await uploadImage()
     } else if (!isEditing.value && !formData.value.image_url) {
-      alert("Harap pilih gambar terlebih dahulu!")
+      Swal.fire({
+        icon: 'warning',
+        title: 'Gambar Belum Dipilih',
+        text: 'Harap pilih gambar terlebih dahulu!',
+        confirmButtonColor: '#06b6d4'
+      })
       isSaving.value = false
       return
     }
@@ -248,19 +255,63 @@ const saveItem = async () => {
 
     await fetchItems()
     closeModal()
+    
+    Swal.fire({
+      icon: 'success',
+      title: 'Berhasil!',
+      text: 'Barang berhasil disimpan.',
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true
+    })
   } catch (error) {
     console.error(error)
-    alert('Terjadi kesalahan: ' + error.message)
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Terjadi kesalahan: ' + error.message,
+      confirmButtonColor: '#06b6d4'
+    })
   } finally {
     isSaving.value = false
   }
 }
 
 const deleteItem = async (id) => {
-  if (confirm('Yakin ingin menghapus barang ini?')) {
+  const result = await Swal.fire({
+    title: 'Hapus Barang?',
+    text: "Barang ini akan dihapus permanen dari daftar jual beli!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#ef4444',
+    cancelButtonColor: '#9ca3af',
+    confirmButtonText: 'Ya, hapus!',
+    cancelButtonText: 'Batal'
+  })
+
+  if (result.isConfirmed) {
     const { error } = await supabase.from('sell_items').delete().eq('id', id)
-    if (error) alert('Gagal menghapus: ' + error.message)
-    else fetchItems()
+    if (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Gagal',
+        text: 'Gagal menghapus: ' + error.message,
+        confirmButtonColor: '#06b6d4'
+      })
+    } else {
+      Swal.fire({
+        icon: 'success',
+        title: 'Terhapus!',
+        text: 'Barang berhasil dihapus.',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+      })
+      fetchItems()
+    }
   }
 }
 

@@ -211,6 +211,8 @@ const uploadImage = async () => {
   return data.publicUrl
 }
 
+import Swal from 'sweetalert2'
+
 const saveItem = async () => {
   try {
     isSaving.value = true
@@ -219,7 +221,12 @@ const saveItem = async () => {
     if (fileToUpload.value) {
       formData.value.thumbnail = await uploadImage()
     } else if (!isEditing.value && !formData.value.thumbnail) {
-      alert("Harap pilih thumbnail terlebih dahulu!")
+      Swal.fire({
+        icon: 'warning',
+        title: 'File Belum Dipilih',
+        text: 'Harap pilih file media terlebih dahulu!',
+        confirmButtonColor: '#06b6d4'
+      })
       isSaving.value = false
       return
     }
@@ -241,19 +248,63 @@ const saveItem = async () => {
 
     await fetchDocs()
     closeModal()
+    
+    Swal.fire({
+      icon: 'success',
+      title: 'Berhasil!',
+      text: 'Dokumentasi berhasil disimpan.',
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true
+    })
   } catch (error) {
     console.error(error)
-    alert('Terjadi kesalahan: ' + error.message)
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Terjadi kesalahan: ' + error.message,
+      confirmButtonColor: '#06b6d4'
+    })
   } finally {
     isSaving.value = false
   }
 }
 
 const deleteItem = async (id) => {
-  if (confirm('Yakin ingin menghapus dokumentasi ini?')) {
+  const result = await Swal.fire({
+    title: 'Hapus Dokumentasi?',
+    text: "Data ini akan dihapus permanen!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#ef4444',
+    cancelButtonColor: '#9ca3af',
+    confirmButtonText: 'Ya, hapus!',
+    cancelButtonText: 'Batal'
+  })
+
+  if (result.isConfirmed) {
     const { error } = await supabase.from('documentations').delete().eq('id', id)
-    if (error) alert('Gagal menghapus: ' + error.message)
-    else fetchDocs()
+    if (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Gagal',
+        text: 'Gagal menghapus: ' + error.message,
+        confirmButtonColor: '#06b6d4'
+      })
+    } else {
+      Swal.fire({
+        icon: 'success',
+        title: 'Terhapus!',
+        text: 'Dokumentasi berhasil dihapus.',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+      })
+      fetchDocs()
+    }
   }
 }
 

@@ -29,6 +29,8 @@ const formatRupiah = (number) => {
   return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(number)
 }
 
+import Swal from 'sweetalert2'
+
 const checkoutWhatsApp = async () => {
   // Ambil pengaturan terbaru langsung dari database sebelum memproses pesanan
   const { data } = await supabase.from('settings').select('*')
@@ -40,16 +42,31 @@ const checkoutWhatsApp = async () => {
   }
 
   if (!appSettings.value.order_enabled) {
-    alert("Mohon maaf, saat ini kami sedang tidak menerima pesanan baru.")
+    Swal.fire({
+      icon: 'info',
+      title: 'Tutup',
+      text: 'Mohon maaf, saat ini kami sedang tidak menerima pesanan baru.',
+      confirmButtonColor: '#06b6d4'
+    })
     return
   }
 
   if (!cartStore.customerName || !cartStore.customerEmail || !cartStore.startDate || !cartStore.endDate || !cartStore.location) {
-    alert("Harap lengkapi semua Data Pemesan dan Detail Acara!")
+    Swal.fire({
+      icon: 'warning',
+      title: 'Data Belum Lengkap',
+      text: 'Harap lengkapi semua Data Pemesan dan Detail Acara!',
+      confirmButtonColor: '#06b6d4'
+    })
     return
   }
   if (cartStore.items.length === 0) {
-    alert("Keranjang masih kosong!")
+    Swal.fire({
+      icon: 'warning',
+      title: 'Keranjang Kosong',
+      text: 'Keranjang masih kosong! Silakan pilih alat terlebih dahulu.',
+      confirmButtonColor: '#06b6d4'
+    })
     return
   }
 
