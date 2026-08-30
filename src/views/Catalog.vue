@@ -1,64 +1,42 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useCartStore } from '../stores/cart'
+import { supabase } from '../lib/supabase'
 
 const cartStore = useCartStore()
 
-// MOCK DATA
-const products = [
-  {
-    id: 1,
-    name: 'Line Array System L-Acoustics K2',
-    category: 'Sound',
-    badge: '5000W',
-    price_per_day: 15000000,
-    image_url: 'https://placehold.co/400x300/1e293b/06b6d4?text=Line+Array'
-  },
-  {
-    id: 2,
-    name: 'Par LED RGBW',
-    category: 'Lighting',
-    badge: '54x3W',
-    price_per_day: 150000,
-    image_url: 'https://placehold.co/400x300/1e293b/06b6d4?text=Par+LED+54'
-  },
-  {
-    id: 3,
-    name: 'Moving Head Beam 230W',
-    category: 'Lighting',
-    badge: '230W',
-    price_per_day: 400000,
-    image_url: 'https://placehold.co/400x300/1e293b/06b6d4?text=Moving+Head'
-  },
-  {
-    id: 4,
-    name: 'Generator Set Cummins',
-    category: 'Power',
-    badge: '40 KVA',
-    price_per_day: 1500000,
-    image_url: 'https://placehold.co/400x300/1e293b/06b6d4?text=Genset+40KVA'
-  },
-  {
-    id: 5,
-    name: 'Rigging Stage Alumunium',
-    category: 'Stage',
-    badge: '10x8m',
-    price_per_day: 3500000,
-    image_url: 'https://placehold.co/400x300/1e293b/06b6d4?text=Rigging+Stage'
-  },
-  {
-    id: 6,
-    name: 'Digital Mixer Allen & Heath SQ6',
-    category: 'Sound',
-    badge: '48 Ch',
-    price_per_day: 1200000,
-    image_url: 'https://placehold.co/400x300/1e293b/06b6d4?text=Mixer+SQ6'
-  }
-]
-
+const products = ref([])
+const loading = ref(true)
 const searchQuery = ref('')
 const activeCategory = ref('All')
-const categories = ['All', 'Sound', 'Lighting', 'Power', 'Stage', 'Visual', 'Truss', 'Cable']
+
+// Compute categories based on unique values in products data
+const categories = computed(() => {
+  const cats = products.value.map(p => p.category).filter(Boolean)
+  const uniqueCats = [...new Set(cats)]
+  return ['All', ...uniqueCats]
+})
+
+const fetchProducts = async () => {
+  loading.value = true
+  try {
+    const { data, error } = await supabase
+      .from('catalogs')
+      .select('*')
+      .order('created_at', { ascending: false })
+    
+    if (error) throw error
+    products.value = data
+  } catch (error) {
+    console.error('Error fetching catalogs:', error)
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(() => {
+  fetchProducts()
+})
 
 // DRAG TO SCROLL LOGIC
 const scrollContainer = ref(null)
@@ -89,7 +67,7 @@ const onMouseMove = (e) => {
 }
 
 const filteredProducts = computed(() => {
-  return products.filter(product => {
+  return products.value.filter(product => {
     const matchCategory = activeCategory.value === 'All' || product.category === activeCategory.value
     const matchSearch = product.name.toLowerCase().includes(searchQuery.value.toLowerCase())
     return matchCategory && matchSearch
@@ -142,7 +120,15 @@ const formatRupiah = (number) => {
         </div>
       </div>
 
-      <div v-if="filteredProducts.length === 0" class="text-center py-20 bg-white rounded-2xl border border-gray-100 shadow-sm">
+      <div v-if="loading" class="text-center py-20 bg-white rounded-2xl border border-gray-100 shadow-sm">
+        <svg class="animate-spin h-10 w-10 text-cyan-500 mx-auto mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <p class="text-xl font-bold text-zinc-700">Memuat Katalog...</p>
+      </div>
+
+      <div v-else-if="filteredProducts.length === 0" class="text-center py-20 bg-white rounded-2xl border border-gray-100 shadow-sm">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
@@ -151,17 +137,17 @@ const formatRupiah = (number) => {
       </div>
       
       <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div v-for="product in filteredProducts" :key="product.id" class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-all group">
-          <div class="relative h-48 overflow-hidden bg-gray-100">
+        <div v-for="product in filteredProducts" :key="product.id" class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-all group flex flex-col">
+          <div class="relative aspect-[4/3] overflow-hidden bg-gray-100">
             <img :src="product.image_url" :alt="product.name" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-500 pointer-events-none">
             <div class="absolute top-4 right-4 bg-yellow-400 border border-yellow-500 text-zinc-900 text-xs font-black px-3 py-1 rounded shadow-sm">
               {{ product.badge }}
             </div>
           </div>
-          <div class="p-6">
-            <div class="text-xs font-black tracking-widest text-cyan-500 uppercase mb-2">{{ product.category }}</div>
-            <h3 class="text-xl font-bold text-zinc-900 mb-4 line-clamp-2 min-h-[3.5rem]">{{ product.name }}</h3>
-            <div class="flex items-end justify-between mt-auto">
+          <div class="p-6 flex-1 flex flex-col">
+            <h3 class="text-xl font-bold text-zinc-900 mb-2">{{ product.name }}</h3>
+            <p v-if="product.description" class="text-sm text-gray-500 font-medium leading-relaxed mb-4 line-clamp-3">{{ product.description }}</p>
+            <div class="flex items-end justify-between mt-auto pt-4 border-t border-gray-50">
               <div>
                 <p class="text-sm font-medium text-gray-500 mb-1">Harga per Hari</p>
                 <p class="text-2xl font-black text-zinc-900">{{ formatRupiah(product.price_per_day).split(',')[0] }}</p>

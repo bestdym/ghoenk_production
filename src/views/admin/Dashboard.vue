@@ -9,7 +9,7 @@
       </div>
       
       <nav class="flex-1 p-6 space-y-2">
-        <router-link to="/admin" exact class="flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-bold transition-all text-gray-600 hover:bg-gray-50" active-class="bg-cyan-50 text-cyan-700 hover:bg-cyan-100 shadow-sm border border-cyan-100">
+        <router-link to="/admin" class="flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-bold transition-all text-gray-600 hover:bg-gray-50" exact-active-class="bg-cyan-50 text-cyan-700 hover:bg-cyan-100 shadow-sm border border-cyan-100">
           Dashboard
         </router-link>
         <router-link to="/admin/catalog" class="flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-bold transition-all text-gray-600 hover:bg-gray-50" active-class="bg-cyan-50 text-cyan-700 hover:bg-cyan-100 shadow-sm border border-cyan-100">
@@ -47,7 +47,7 @@
       
       <!-- Mobile Menu Overlay -->
       <div v-if="isMobileMenuOpen" class="md:hidden bg-white border-b border-gray-200 p-4 space-y-2 z-20 absolute w-full top-[73px] shadow-lg">
-        <router-link to="/admin" exact @click="isMobileMenuOpen = false" class="block px-4 py-3 rounded-lg text-sm font-bold text-gray-600" active-class="bg-cyan-50 text-cyan-700">Dashboard</router-link>
+        <router-link to="/admin" exact-active-class="bg-cyan-50 text-cyan-700" @click="isMobileMenuOpen = false" class="block px-4 py-3 rounded-lg text-sm font-bold text-gray-600">Dashboard</router-link>
         <router-link to="/admin/catalog" @click="isMobileMenuOpen = false" class="block px-4 py-3 rounded-lg text-sm font-bold text-gray-600" active-class="bg-cyan-50 text-cyan-700">Katalog Alat</router-link>
         <router-link to="/admin/doc" @click="isMobileMenuOpen = false" class="block px-4 py-3 rounded-lg text-sm font-bold text-gray-600" active-class="bg-cyan-50 text-cyan-700">Dokumentasi</router-link>
         <router-link to="/admin/sell" @click="isMobileMenuOpen = false" class="block px-4 py-3 rounded-lg text-sm font-bold text-gray-600" active-class="bg-cyan-50 text-cyan-700">Jual Beli</router-link>

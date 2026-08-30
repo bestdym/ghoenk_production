@@ -27,8 +27,26 @@
         </button>
       </div>
 
+      <!-- Loading State -->
+      <div v-if="loading" class="text-center py-20 bg-white rounded-2xl border border-gray-100 shadow-sm">
+        <svg class="animate-spin h-10 w-10 text-cyan-500 mx-auto mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <p class="text-xl font-bold text-zinc-700">Memuat Dokumentasi...</p>
+      </div>
+
+      <!-- Empty State -->
+      <div v-else-if="filteredGallery.length === 0" class="text-center py-20 bg-white rounded-2xl border border-gray-100 shadow-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+        <p class="text-xl font-bold text-zinc-700">Dokumentasi tidak ditemukan.</p>
+        <p class="text-gray-500 mt-2">Coba pilih kategori filter yang lain.</p>
+      </div>
+
       <!-- Gallery Grid -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         
         <div v-for="item in filteredGallery" :key="item.id" class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-xl hover:border-cyan-200 transition-all duration-300 group flex flex-col cursor-pointer">
           
@@ -81,68 +99,40 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { supabase } from '../lib/supabase'
 
-const filters = ['Semua', 'Panggung & Konser', 'Pernikahan', 'Acara Perusahaan']
+const loading = ref(true)
 const activeFilter = ref('Semua')
+const galleryItems = ref([])
 
-// Dummy data for documentation gallery
-const galleryItems = ref([
-  {
-    id: 1,
-    type: 'video',
-    title: 'Konser Musik Kemerdekaan 2025',
-    description: 'Dukungan penuh tata suara (Line Array) dan lighting spektakuler untuk panggung utama konser malam kemerdekaan.',
-    category: 'Panggung & Konser',
-    date: 'Agt 2025',
-    thumbnail: 'https://placehold.co/800x600/e2e8f0/64748b?text=Konser+Kemerdekaan'
-  },
-  {
-    id: 2,
-    type: 'photo',
-    title: 'Grand Wedding Reception',
-    description: 'Instalasi rigging, lighting dekoratif, dan sound system elegan untuk acara pernikahan indoor berkapasitas 2000 tamu.',
-    category: 'Pernikahan',
-    date: 'Jul 2025',
-    thumbnail: 'https://placehold.co/800x600/e2e8f0/64748b?text=Wedding+Reception'
-  },
-  {
-    id: 3,
-    type: 'photo',
-    title: 'Gala Dinner Perusahaan',
-    description: 'Set up panggung minimalis elegan dengan LED Screen dan sistem audio rapat tingkat tinggi.',
-    category: 'Acara Perusahaan',
-    date: 'Jun 2025',
-    thumbnail: 'https://placehold.co/800x600/e2e8f0/64748b?text=Gala+Dinner'
-  },
-  {
-    id: 4,
-    type: 'video',
-    title: 'Festival Budaya Daerah',
-    description: 'Video kompilasi dari dukungan alat untuk pagelaran budaya luar ruangan selama 3 hari berturut-turut.',
-    category: 'Panggung & Konser',
-    date: 'Mei 2025',
-    thumbnail: 'https://placehold.co/800x600/e2e8f0/64748b?text=Festival+Budaya'
-  },
-  {
-    id: 5,
-    type: 'photo',
-    title: 'Peresmian Pabrik Baru',
-    description: 'Penyewaan tenda sarnafil raksasa, genset backup, dan sound system untuk upacara peresmian oleh direksi.',
-    category: 'Acara Perusahaan',
-    date: 'Apr 2025',
-    thumbnail: 'https://placehold.co/800x600/e2e8f0/64748b?text=Peresmian+Pabrik'
-  },
-  {
-    id: 6,
-    type: 'photo',
-    title: 'Outdoor Wedding Party',
-    description: 'Suasana romantis dengan fairy lights, sound system akustik, dan panggung custom untuk resepsi kebun.',
-    category: 'Pernikahan',
-    date: 'Mar 2025',
-    thumbnail: 'https://placehold.co/800x600/e2e8f0/64748b?text=Outdoor+Wedding'
+// Compute filters based on unique categories in galleryItems
+const filters = computed(() => {
+  const cats = galleryItems.value.map(item => item.category).filter(Boolean)
+  const uniqueCats = [...new Set(cats)]
+  return ['Semua', ...uniqueCats]
+})
+
+const fetchDocs = async () => {
+  loading.value = true
+  try {
+    const { data, error } = await supabase
+      .from('documentations')
+      .select('*')
+      .order('created_at', { ascending: false })
+    
+    if (error) throw error
+    galleryItems.value = data
+  } catch (error) {
+    console.error('Error fetching documentations:', error)
+  } finally {
+    loading.value = false
   }
-])
+}
+
+onMounted(() => {
+  fetchDocs()
+})
 
 const filteredGallery = computed(() => {
   if (activeFilter.value === 'Semua') {

@@ -51,8 +51,8 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <!-- Main Large Card -->
         <router-link to="/catalog" class="md:col-span-2 relative h-[500px] rounded-xl overflow-hidden group border border-gray-200 block shadow-sm hover:shadow-md transition-shadow">
-          <img src="https://placehold.co/800x600/e2e8f0/94a3b8?text=Stage+Rigging" class="absolute inset-0 w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-700">
-          <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+          <img src="../assets/images/rigging.jpg" class="absolute inset-0 w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-700">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
           <div class="absolute bottom-0 left-0 p-8">
             <span class="bg-white/90 text-slate-900 text-xs font-bold px-2 py-1 rounded mb-3 inline-block uppercase tracking-wider">KATEGORI</span>
             <h3 class="text-3xl font-black text-white mb-2">Panggung & Rigging</h3>
@@ -63,16 +63,16 @@
         <!-- Right Column Cards -->
         <div class="flex flex-col gap-6">
           <router-link to="/catalog" class="relative h-[238px] rounded-xl overflow-hidden group border border-gray-200 block shadow-sm hover:shadow-md transition-shadow">
-            <img src="https://placehold.co/400x300/e2e8f0/94a3b8?text=Stage+Lighting" class="absolute inset-0 w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-700">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+            <img src="../assets/images/cahaya.jpg" class="absolute inset-0 w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-700">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
             <div class="absolute bottom-0 left-0 p-6">
               <h3 class="text-xl font-black text-white">Tata Cahaya</h3>
             </div>
           </router-link>
           
           <router-link to="/catalog" class="relative h-[238px] rounded-xl overflow-hidden group border border-gray-200 block shadow-sm hover:shadow-md transition-shadow">
-            <img src="https://placehold.co/400x300/e2e8f0/94a3b8?text=Audio+Systems" class="absolute inset-0 w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-700">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+            <img src="../assets/images/shound.webp" class="absolute inset-0 w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-700">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
             <div class="absolute bottom-0 left-0 p-6">
               <h3 class="text-xl font-black text-white">Sistem Audio</h3>
             </div>
