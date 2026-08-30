@@ -1,18 +1,44 @@
 <script setup>
 import { ref } from 'vue'
 
+import { supabase } from '../lib/supabase'
+
 const firstName = ref('')
 const lastName = ref('')
 const email = ref('')
 const message = ref('')
+const appSettings = ref({
+  whatsapp_number: '6281227419667'
+})
 
-const sendWhatsAppMessage = () => {
+import { onMounted } from 'vue'
+
+const fetchSettings = async () => {
+  const { data } = await supabase.from('settings').select('*')
+  if (data) {
+    const wa = data.find(s => s.setting_key === 'whatsapp_number')
+    if (wa) appSettings.value.whatsapp_number = wa.setting_value
+  }
+}
+
+onMounted(() => {
+  fetchSettings()
+})
+
+const sendWhatsAppMessage = async () => {
   if (!firstName.value || !message.value) {
     alert("Harap isi Nama Depan dan Pesan Anda!")
     return
   }
 
-  const phoneNumber = '6281227419667'
+  // Ambil nomor terbaru langsung dari database
+  const { data } = await supabase.from('settings').select('*')
+  if (data) {
+    const wa = data.find(s => s.setting_key === 'whatsapp_number')
+    if (wa) appSettings.value.whatsapp_number = wa.setting_value
+  }
+
+  const phoneNumber = appSettings.value.whatsapp_number
   
   let text = `*PESAN BARU DARI WEBSITE*\n\n`
   text += `*Nama:* ${firstName.value} ${lastName.value}\n`

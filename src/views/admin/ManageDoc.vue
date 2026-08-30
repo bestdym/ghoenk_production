@@ -103,9 +103,9 @@
                 </div>
 
                 <div>
-                  <label class="block text-sm font-bold text-gray-700 mb-1">Thumbnail Foto</label>
-                  <input type="file" @change="handleFileUpload" accept="image/*" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-cyan-50 file:text-cyan-700 hover:file:bg-cyan-100">
-                  <p class="text-xs text-gray-500 mt-1" v-if="isEditing">Kosongkan jika tidak ingin mengganti thumbnail.</p>
+                  <label class="block text-sm font-bold text-gray-700 mb-1">File Media (Foto / Video)</label>
+                  <input type="file" @change="handleFileUpload" accept="image/*,video/*" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-cyan-50 file:text-cyan-700 hover:file:bg-cyan-100">
+                  <p class="text-xs text-gray-500 mt-1" v-if="isEditing">Kosongkan jika tidak ingin mengganti file media.</p>
                 </div>
               </div>
             </div>

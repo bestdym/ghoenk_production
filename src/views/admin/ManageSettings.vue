@@ -68,10 +68,16 @@ const fetchSettings = async () => {
 }
 
 const saveWaNumber = async () => {
-  const { error } = await supabase
-    .from('settings')
-    .update({ setting_value: waNumber.value })
-    .eq('setting_key', 'whatsapp_number')
+  const { data: existing } = await supabase.from('settings').select('id').eq('setting_key', 'whatsapp_number').maybeSingle()
+  
+  let error;
+  if (existing) {
+    const res = await supabase.from('settings').update({ setting_value: waNumber.value }).eq('setting_key', 'whatsapp_number')
+    error = res.error
+  } else {
+    const res = await supabase.from('settings').insert({ setting_key: 'whatsapp_number', setting_value: waNumber.value })
+    error = res.error
+  }
   
   if (error) alert('Gagal menyimpan: ' + error.message)
   else alert('Nomor WhatsApp berhasil disimpan!')
@@ -79,10 +85,16 @@ const saveWaNumber = async () => {
 
 const toggleOrderEnabled = async () => {
   const newValue = !orderEnabled.value
-  const { error } = await supabase
-    .from('settings')
-    .update({ setting_value: newValue.toString() })
-    .eq('setting_key', 'order_enabled')
+  const { data: existing } = await supabase.from('settings').select('id').eq('setting_key', 'order_enabled').maybeSingle()
+  
+  let error;
+  if (existing) {
+    const res = await supabase.from('settings').update({ setting_value: newValue.toString() }).eq('setting_key', 'order_enabled')
+    error = res.error
+  } else {
+    const res = await supabase.from('settings').insert({ setting_key: 'order_enabled', setting_value: newValue.toString() })
+    error = res.error
+  }
     
   if (error) {
     alert('Gagal mengubah status: ' + error.message)

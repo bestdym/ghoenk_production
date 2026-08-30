@@ -138,9 +138,9 @@ const formatRupiah = (number) => {
       
       <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         <div v-for="product in filteredProducts" :key="product.id" class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-all group flex flex-col">
-          <div class="relative aspect-[4/3] overflow-hidden bg-gray-100">
+          <div class="relative h-64 overflow-hidden bg-gray-100">
             <img :src="product.image_url" :alt="product.name" class="w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-500 pointer-events-none">
-            <div class="absolute top-4 right-4 bg-yellow-400 border border-yellow-500 text-zinc-900 text-xs font-black px-3 py-1 rounded shadow-sm">
+            <div v-if="product.badge" class="absolute top-4 right-4 bg-yellow-400 border border-yellow-500 text-zinc-900 text-xs font-black px-3 py-1 rounded shadow-sm">
               {{ product.badge }}
             </div>
           </div>

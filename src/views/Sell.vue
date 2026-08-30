@@ -31,8 +31,21 @@ const fetchItems = async () => {
   }
 }
 
+const appSettings = ref({
+  whatsapp_number: '6281234567890'
+})
+
+const fetchSettings = async () => {
+  const { data } = await supabase.from('settings').select('*')
+  if (data) {
+    const wa = data.find(s => s.setting_key === 'whatsapp_number')
+    if (wa) appSettings.value.whatsapp_number = wa.setting_value
+  }
+}
+
 onMounted(() => {
   fetchItems()
+  fetchSettings()
 })
 
 const filteredItems = computed(() => {
@@ -47,9 +60,16 @@ const formatRupiah = (number) => {
   return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(number)
 }
 
-const contactAdmin = (item) => {
+const contactAdmin = async (item) => {
+  // Ambil nomor terbaru langsung dari database
+  const { data } = await supabase.from('settings').select('*')
+  if (data) {
+    const wa = data.find(s => s.setting_key === 'whatsapp_number')
+    if (wa) appSettings.value.whatsapp_number = wa.setting_value
+  }
+
   const message = `Halo Admin Ghoenk Production, saya tertarik dengan barang "${item.name}" yang dijual seharga ${formatRupiah(item.price)}.`
-  const whatsappUrl = `https://wa.me/6281234567890?text=${encodeURIComponent(message)}`
+  const whatsappUrl = `https://wa.me/${appSettings.value.whatsapp_number}?text=${encodeURIComponent(message)}`
   window.open(whatsappUrl, '_blank')
 }
 </script>
@@ -115,7 +135,7 @@ const contactAdmin = (item) => {
       <!-- Grid -->
       <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         <div v-for="item in filteredItems" :key="item.id" class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-all group flex flex-col">
-          <div class="relative aspect-[4/3] overflow-hidden bg-gray-100 shrink-0">
+          <div class="relative h-64 overflow-hidden bg-gray-100 shrink-0">
             <img :src="item.image_url" :alt="item.name" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 pointer-events-none">
             
             <div class="absolute top-4 right-4 flex flex-col gap-2 items-end">

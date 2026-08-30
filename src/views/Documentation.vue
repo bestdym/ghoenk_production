@@ -52,16 +52,6 @@
           
           <!-- Media Container -->
           <div class="relative h-64 overflow-hidden bg-zinc-100">
-            <!-- Video Icon Overlay if it's a video -->
-            <div v-if="item.type === 'video'" class="absolute inset-0 z-10 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors">
-              <div class="w-14 h-14 bg-white/90 backdrop-blur rounded-full flex items-center justify-center text-zinc-900 shadow-lg transform group-hover:scale-110 transition-transform">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-            </div>
-            
             <!-- Type Badge -->
             <div class="absolute top-4 left-4 z-20">
               <span class="bg-zinc-900/80 backdrop-blur text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm flex items-center gap-1.5">
@@ -75,8 +65,9 @@
               </span>
             </div>
 
-            <!-- Image/Thumbnail -->
-            <img :src="item.thumbnail" :alt="item.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+            <!-- Image/Video Player -->
+            <video v-if="item.type === 'video'" :src="item.thumbnail" class="w-full h-full object-cover" controls preload="metadata"></video>
+            <img v-else :src="item.thumbnail" :alt="item.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
           </div>
           
           <!-- Content -->
