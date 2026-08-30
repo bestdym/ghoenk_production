@@ -63,7 +63,7 @@
         <!-- Right side smaller cards -->
         <div class="flex flex-col gap-6 h-[500px]">
           <router-link to="/catalog" class="relative flex-1 rounded-xl overflow-hidden group border border-gray-200 block shadow-sm hover:shadow-md transition-shadow">
-            <img src="../assets/images/speaker.jpg" class="absolute inset-0 w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-700">
+            <img src="../assets/images/shound.webp" class="absolute inset-0 w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-700">
             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
             <div class="absolute bottom-0 left-0 p-6">
               <h3 class="text-xl font-black text-white mb-1">Sound System</h3>
