@@ -3,7 +3,10 @@ import { ref, computed, onMounted } from 'vue'
 import { useCartStore } from '../stores/cart'
 import { supabase } from '../lib/supabase'
 
+import { useRoute } from 'vue-router'
+
 const cartStore = useCartStore()
+const route = useRoute()
 
 const products = ref([])
 const loading = ref(true)
@@ -35,6 +38,9 @@ const fetchProducts = async () => {
 }
 
 onMounted(() => {
+  if (route.query.search) {
+    searchQuery.value = route.query.search
+  }
   fetchProducts()
 })
 
@@ -69,7 +75,14 @@ const onMouseMove = (e) => {
 const filteredProducts = computed(() => {
   return products.value.filter(product => {
     const matchCategory = activeCategory.value === 'All' || product.category === activeCategory.value
-    const matchSearch = product.name.toLowerCase().includes(searchQuery.value.toLowerCase())
+    
+    const searchLower = searchQuery.value.toLowerCase()
+    const nameMatch = product.name?.toLowerCase().includes(searchLower) || false
+    const catMatch = product.category?.toLowerCase().includes(searchLower) || false
+    const descMatch = product.description?.toLowerCase().includes(searchLower) || false
+    
+    const matchSearch = nameMatch || catMatch || descMatch
+    
     return matchCategory && matchSearch
   })
 })
